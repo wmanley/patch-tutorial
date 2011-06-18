@@ -15,16 +15,16 @@ def main(argv=None):
     except getopt.error, msg:
         print msg
         print "for help use --help"
-        sys.exit(2)
+        return 2
     # process options
     for o, a in opts:
         if o in ("-h", "--help"):
             print __doc__
-            sys.exit(0)
+            return 0
     # process arguments
     for arg in args:
         process(arg) # process() is defined elsewhere
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
 
