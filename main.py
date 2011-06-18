@@ -6,10 +6,12 @@ This serves as a long usage message.
 import sys
 import getopt
 
-def main():
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
     # parse command line options
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "h", ["help"])
+        opts, args = getopt.getopt(argv[1:], "h", ["help"])
     except getopt.error, msg:
         print msg
         print "for help use --help"
