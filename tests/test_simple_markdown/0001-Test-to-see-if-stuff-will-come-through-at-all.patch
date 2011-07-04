@@ -1,0 +1,22 @@
+From a080f9fa53ef4cc412afb832e9c98e731b74d3e2 Mon Sep 17 00:00:00 2001
+From: Will Manley <will@williammanley.net>
+Date: Wed, 28 Dec 2011 02:12:17 +0000
+Subject: [PATCH 1/2] Test to see if stuff will come through at all
+
+and if simple _markdown_ markup works
+---
+ moo.txt |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+ create mode 100644 moo.txt
+
+diff --git a/moo.txt b/moo.txt
+new file mode 100644
+index 0000000..760a020
+--- /dev/null
++++ b/moo.txt
+@@ -0,0 +1,2 @@
++The contents of this file is irrelevant as it will not be used in this example
++
+-- 
+1.7.1
+

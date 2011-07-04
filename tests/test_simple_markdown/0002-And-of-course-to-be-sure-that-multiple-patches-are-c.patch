@@ -1,0 +1,21 @@
+From 0cdaf6930e692455f8c3bff4c882454bbc631683 Mon Sep 17 00:00:00 2001
+From: Will Manley <will@williammanley.net>
+Date: Wed, 28 Dec 2011 02:13:08 +0000
+Subject: [PATCH 2/2] And of course to be sure that multiple patches are concatenated together
+
+---
+ moo.txt |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/moo.txt b/moo.txt
+index 760a020..168fe59 100644
+--- a/moo.txt
++++ b/moo.txt
+@@ -1,2 +1,3 @@
+-The contents of this file is irrelevant as it will not be used in this example
++The contents of this file is irrelevant as it will not be used in this example.
+ 
++This is an extra line just for the sake of it.
+-- 
+1.7.1
+
