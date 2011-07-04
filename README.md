@@ -25,3 +25,9 @@ To regenerate the patch series from the last 3 commits in the git repository:
 
     $ git format-patch -3 -o directory_with_patches/
 
+## LICENSE
+
+generate-patch-tutorial is Copyright (C) 2011 William Manley and is distributed
+under the GNU General Public License version 2 or at your option any later
+version.  See the COPYING file for more information.
+
