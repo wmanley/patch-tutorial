@@ -22,7 +22,11 @@
 import StringIO
 import optparse
 import os.path
+import os
+import tempfile
+import shutil
 import sys
+import subprocess
 import markdown
 import re
 
@@ -108,10 +112,28 @@ def get_list_of_commits(patch_list):
         f.close()
     return lst
 
+def apply_patch(path, patch):
+    os.chdir(path)
+    pp = subprocess.Popen(["patch", "-p1"], stdin=subprocess.PIPE, stdout=open("/dev/null", "w"))
+    pp.stdin.write(patch)
+    pp.stdin.close()
+    if pp.wait() != 0:
+        raise CalledProcessError()
+
 def generate_html(output, patches):
+    tmpdir = tempfile.mkdtemp()
+    assert tmpdir[0:5] == "/tmp/"
+    os.mkdir(tmpdir + "/old")
+    os.mkdir(tmpdir + "/new")
     for comment, patch in get_list_of_commits(patches):
+        apply_patch(tmpdir + "/new", patch)
+        os.chdir(tmpdir)
+
         output.write(markdown.markdown(comment))
         output.write("\n")
+
+        apply_patch(tmpdir + "/old", patch)
+    shutil.rmtree(tmpdir)
 
 def main(argv):
     parser = optparse.OptionParser()
