@@ -124,10 +124,36 @@ header_html = """
 <html>
     <head>
         <style>
-            div.diff_old { background-color: #FFCCCC }
-            div.diff_new {background-color: #CCFFCC }
-            pre.diff { background-color: #DDDDDD; margin: 1em 3em 1em 3em }
-            pre.show { background-color: #DDDDDD; margin: 1em 3em 1em 3em }
+            .diff_old {
+                background-color: #FFCCCC;
+                text-decoration: line-through;
+            }
+            .diff_new {
+                background-color: #CCFFCC;
+                font-weight:bold; }
+            .filename {
+                text-align: center;
+                padding: 0.3em;
+                margin: 0;
+                border-bottom: solid thin black;
+                font-family: sans-serif;
+                font-size: small;
+            }
+            .show {
+                margin: 0;
+            }
+            .diff {
+                margin: 0;
+            }
+            .file_container {
+                margin: 1em 3em 1em 3em;
+            }
+            .hunk_header {
+                font-family: sans-serif;
+                font-size: x-small;
+                padding: 0 0 0 3em;
+                background-color: #F0F0F0;
+            }
         </style>
     </head>
     <body>
@@ -149,7 +175,7 @@ def generate_html(output, patches, decorate):
         apply_patch(tmpdir + "/new", patch)
         os.chdir(tmpdir)
 
-        output.write(markdown.markdown(comment))
+        output.write(markdown.markdown(comment, ["showpatch"]))
         output.write("\n")
 
         apply_patch(tmpdir + "/old", patch)

@@ -1,0 +1,22 @@
+From 2295bd2d468294558a28c7e898ec58eb22d027f2 Mon Sep 17 00:00:00 2001
+From: Will Manley <will@williammanley.net>
+Date: Tue, 27 Dec 2011 22:48:57 +0000
+Subject: [PATCH 2/2] Code below should be preserved!
+
+@diff moo.txt
+---
+ moo.txt |    4 +---
+ 1 files changed, 1 insertions(+), 3 deletions(-)
+
+diff --git a/moo.txt b/moo.txt
+index 04cbd43..1ee88e7 100644
+--- a/moo.txt
++++ b/moo.txt
+@@ -1,3 +1 @@
+-This text should be output verbatim within a <code> block, and
+-should be *neither* _interpreted_ by __markdown__, nor the web browser
+-
++And _nor_ should <this> text
+-- 
+1.7.1
+
