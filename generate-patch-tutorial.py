@@ -155,6 +155,9 @@ header_html = """
                 background-color: #F0F0F0;
             }
         </style>
+        <script src="http://yandex.st/highlightjs/6.1/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        <link rel="stylesheet" href="http://yandex.st/highlightjs/6.1/styles/solarized_light.min.css"/>
     </head>
     <body>
 """
