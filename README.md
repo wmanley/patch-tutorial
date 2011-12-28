@@ -26,6 +26,7 @@ Markdown is an easy to read and write plain text markup language.  See
 generate-patch-tutorial defines some extensions to the markdown format to allow
 inclusion of code and changes in the output html:
 
+@show filename
 @diff [options] filename
 
 ### Manipulating your patch series (tutorial) with git

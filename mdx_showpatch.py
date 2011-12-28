@@ -50,10 +50,36 @@ class DiffBlockProcessor(markdown.blockprocessors.BlockProcessor):
         for f in files:
             prettify_diff(parent, open_diff(self.srcdir + "/old/" + f, self.srcdir + "/new/" + f))
 
+class ShowBlockProcessor(markdown.blockprocessors.BlockProcessor):
+    def __init__(self, configs):
+        self.configs = configs
+        self.srcdir = "."
+
+    def test(self, parent, block):
+        return block.startswith("@show")
+
+    def run(self, parent, blocks):
+        block = blocks.pop(0)
+        assert block.startswith("@show")
+        files = block[5:].split()
+        for f in files:
+            file_container = markdown.etree.SubElement(parent, "div")
+            file_container.set("class", "file_container")
+            filename_container = markdown.etree.SubElement(file_container, "div")
+            filename_container.text = f
+            filename_container.set('class', 'filename')
+            hunk_container = markdown.etree.SubElement(file_container, "pre")
+            hunk_container.set('class', 'show')
+            daddy = markdown.etree.SubElement(hunk_container, "code")
+            daddy.text = markdown.AtomicString("".join(iter(open(self.srcdir + "/new/" + f))))
+
 class ShowPatchExtension(markdown.Extension):
     def extendMarkdown(self, md, md_globals):
         md.parser.blockprocessors.add('diff',
                                       DiffBlockProcessor(md.parser),
+                                      '_begin')
+        md.parser.blockprocessors.add('show',
+                                      ShowBlockProcessor(md.parser),
                                       '_begin')
 
 def makeExtension(configs=None) :
