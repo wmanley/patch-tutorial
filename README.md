@@ -1,6 +1,6 @@
 ## SYNOPSIS
 
-`generate-patch-tutorial.py` [-o output_filename] patches...
+`generate-patch-tutorial.py` [options] patches...
 
 ## DESCRIPTION
 
@@ -11,6 +11,10 @@ the comments in markdown format.
 
  * `-o output_filename`:
    Output the html to a file (given by output_filename) rather than STDOUT
+ * `--suppress-decoration`:
+   Usually the output file will be prepended with html, head, style, etc. tags.
+   Use this option to suppress this.  This would be typically useful if you wish
+   to embed the tutorial in some other page or apply your own custom styling.
 
 ## NOTES
 

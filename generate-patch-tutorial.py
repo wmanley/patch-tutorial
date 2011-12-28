@@ -120,11 +120,31 @@ def apply_patch(path, patch):
     if pp.wait() != 0:
         raise CalledProcessError()
 
-def generate_html(output, patches):
+header_html = """
+<html>
+    <head>
+        <style>
+            div.diff_old { background-color: #FFCCCC }
+            div.diff_new {background-color: #CCFFCC }
+            pre.diff { background-color: #DDDDDD; margin: 1em 3em 1em 3em }
+            pre.show { background-color: #DDDDDD; margin: 1em 3em 1em 3em }
+        </style>
+    </head>
+    <body>
+"""
+
+footer_html = """
+    </body>
+</html>
+"""
+
+def generate_html(output, patches, decorate):
     tmpdir = tempfile.mkdtemp()
     assert tmpdir[0:5] == "/tmp/"
     os.mkdir(tmpdir + "/old")
     os.mkdir(tmpdir + "/new")
+    if decorate:
+        output.write(header_html)
     for comment, patch in get_list_of_commits(patches):
         apply_patch(tmpdir + "/new", patch)
         os.chdir(tmpdir)
@@ -133,12 +153,16 @@ def generate_html(output, patches):
         output.write("\n")
 
         apply_patch(tmpdir + "/old", patch)
+    if decorate:
+        output.write(footer_html)
     shutil.rmtree(tmpdir)
 
 def main(argv):
     parser = optparse.OptionParser()
     parser.add_option("-o", "--output", dest="filename",
                       help="write output to FILE rather than STDOUT", metavar="FILE")
+    parser.add_option("-s", "--suppress-decoration", action="store_false", dest="decorate",
+                      default=True, help="Don't write out header/footer")
 
     (options, patches) = parser.parse_args(argv[1:])
     abspatches = [os.path.abspath(patch) for patch in patches]
@@ -148,7 +172,7 @@ def main(argv):
     else:
         output = open(options.filename, 'w')
 
-    generate_html(output, abspatches)
+    generate_html(output, abspatches, options.decorate)
 
     return 0
 
