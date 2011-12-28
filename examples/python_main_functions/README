@@ -1,0 +1,16 @@
+A tutorial pinched from Guido van Rossum's blog[1].  I chose this as it was a
+nice simple and readable example of the tutorial as a series of patches.  I
+asked Guido for permission to copy it to which he replied
+
+    "I promise won't come after you for using that one little blog post. :-)"
+
+and that's good enough for me.
+
+A Makefile is included to illustrate how to do common tasks like:
+ - `make tutorial.html` - Create a tutorial from the patches
+ - `make repo` - Create a git repository from the patches
+ - `make patches` - Recreate patches from the git repository
+ - `make check` - Check that all the patches are valid and create a valid
+   main.py
+
+[1] http://www.artima.com/weblogs/viewpost.jsp?thread=4829

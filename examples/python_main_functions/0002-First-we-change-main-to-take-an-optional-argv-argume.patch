@@ -1,0 +1,42 @@
+From 258f17afd58520823a2577110e4abb3e0990086f Mon Sep 17 00:00:00 2001
+From: Will Manley <will@williammanley.net>
+Date: Sat, 18 Jun 2011 14:35:37 +0100
+Subject: [PATCH 2/4] First, we change `main()` to take an optional 'argv' argument, which allows us to call it from the interactive Python prompt:
+
+@diff main.py
+
+Note that we fill in the default for argv dynamically. This is more flexible
+than writing
+
+    def main(argv=sys.argv):
+        # etc.
+
+because `sys.argv` might have been changed by the time the call is made; the
+default argument is calculated at the time the `main()` function is defined,
+for all times.
+---
+ main.py |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/main.py b/main.py
+index dd80409..c944e5a 100755
+--- a/main.py
++++ b/main.py
+@@ -6,10 +6,12 @@ This serves as a long usage message.
+ import sys
+ import getopt
+ 
+-def main():
++def main(argv=None):
++    if argv is None:
++        argv = sys.argv
+     # parse command line options
+     try:
+-        opts, args = getopt.getopt(sys.argv[1:], "h", ["help"])
++        opts, args = getopt.getopt(argv[1:], "h", ["help"])
+     except getopt.error, msg:
+         print msg
+         print "for help use --help"
+-- 
+1.7.1
+

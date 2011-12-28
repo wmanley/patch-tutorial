@@ -1,0 +1,39 @@
+From 703b1659a96f6ac946c08f1f97156c25e18acab4 Mon Sep 17 00:00:00 2001
+From: Will Manley <will@williammanley.net>
+Date: Sat, 18 Jun 2011 14:37:35 +0100
+Subject: [PATCH 3/4] Now the `sys.exit()` calls are annoying: when `main()` calls `sys.exit()`, your interactive Python interpreter will exit! The remedy is to let `main()`'s return value specify the exit status. Thus, the code becomes
+
+@diff main.py
+
+and the calls to `sys.exit(n)` inside `main()` all become `return n`.
+---
+ main.py |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/main.py b/main.py
+index c944e5a..43b7fe1 100755
+--- a/main.py
++++ b/main.py
+@@ -15,16 +15,16 @@ def main(argv=None):
+     except getopt.error, msg:
+         print msg
+         print "for help use --help"
+-        sys.exit(2)
++        return 2
+     # process options
+     for o, a in opts:
+         if o in ("-h", "--help"):
+             print __doc__
+-            sys.exit(0)
++            return 0
+     # process arguments
+     for arg in args:
+         process(arg) # process() is defined elsewhere
+ 
+ if __name__ == "__main__":
+-    main()
++    sys.exit(main())
+ 
+-- 
+1.7.1
+

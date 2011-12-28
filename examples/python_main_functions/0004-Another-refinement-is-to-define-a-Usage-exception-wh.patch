@@ -1,0 +1,71 @@
+From c0db965a6958b95966fe3133cd4d5aad346b1799 Mon Sep 17 00:00:00 2001
+From: Will Manley <will@williammanley.net>
+Date: Wed, 28 Dec 2011 01:21:23 +0000
+Subject: [PATCH 4/4] Another refinement is to define a `Usage()` exception, which we catch in an except clause at the end of `main()`:
+
+@show main.py
+
+This gives the `main()` function a single exit point, which is preferable over
+multiple `return 2` statements. This also makes it easier to refactor the
+argument parsing: `raise Usage` works just fine from inside a helper function,
+but `return 2` would require careful passing on of the return values.
+
+You might think that taking this to the extreme would move the `try`/`except`
+clause out of the `main()` function, into the code at the end of the module (if
+`__name__ == "__main__": ....` But that would mean that when you call `main()`
+interactively, you'd get a traceback for command line syntax errors, which
+isn't very helpful.
+
+However, another generalization can be helpful: define another exception,
+perhaps called `Error`, which is treated just like `Usage` but `return`s `1`.
+This can then be used for expected errors like failure to open necessary files,
+which are not command line syntax errors, but yet expected, and where again a
+traceback doesn't feel very friendly.
+---
+ main.py |   24 ++++++++++++------------
+ 1 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/main.py b/main.py
+index 43b7fe1..d1d5a2b 100755
+--- a/main.py
++++ b/main.py
+@@ -6,24 +6,24 @@ This serves as a long usage message.
+ import sys
+ import getopt
+ 
++class Usage(Exception):
++    def __init__(self, msg):
++        self.msg = msg
++
+ def main(argv=None):
+     if argv is None:
+         argv = sys.argv
+     # parse command line options
+     try:
+-        opts, args = getopt.getopt(argv[1:], "h", ["help"])
+-    except getopt.error, msg:
+-        print msg
+-        print "for help use --help"
++        try:
++            opts, args = getopt.getopt(argv[1:], "h", ["help"])
++        except getopt.error, msg:
++             raise Usage(msg)
++        # more code, unchanged
++    except Usage, err:
++        print >>sys.stderr, err.msg
++        print >>sys.stderr, "for help use --help"
+         return 2
+-    # process options
+-    for o, a in opts:
+-        if o in ("-h", "--help"):
+-            print __doc__
+-            return 0
+-    # process arguments
+-    for arg in args:
+-        process(arg) # process() is defined elsewhere
+ 
+ if __name__ == "__main__":
+     sys.exit(main())
+-- 
+1.7.1
+

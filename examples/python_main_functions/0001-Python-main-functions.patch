@@ -1,0 +1,65 @@
+From 997f1ed164c1c5050c952081963099cee6a017b7 Mon Sep 17 00:00:00 2001
+From: Will Manley <will@williammanley.net>
+Date: Sat, 18 Jun 2011 14:33:14 +0100
+Subject: [PATCH 1/4] # Python `main()` functions
+
+### By Guido van van Rossum
+#### May 15, 2003
+
+> ## Summary
+>
+> For Python programmers, I've got some suggestions on how to write a
+> main() function that's easy to invoke in other contexts, e.g. from the
+> interactive Python prompt when you feel like experimenting.
+
+-----------------------------------------------------------------------------
+
+I've written a few `main()` functions in my time. They usually have a structure roughly like this:
+
+@show main.py
+
+I'm sure many people write similar `main()` functions. I've got a few
+suggestions that make `main()` a little more flexible, especially as option
+parsing becomes more complex.
+---
+ main.py |   28 ++++++++++++++++++++++++++++
+ 1 files changed, 28 insertions(+), 0 deletions(-)
+ create mode 100755 main.py
+
+diff --git a/main.py b/main.py
+new file mode 100755
+index 0000000..dd80409
+--- /dev/null
++++ b/main.py
+@@ -0,0 +1,28 @@
++#!/usr/bin/env python
++"""Module docstring.
++
++This serves as a long usage message.
++"""
++import sys
++import getopt
++
++def main():
++    # parse command line options
++    try:
++        opts, args = getopt.getopt(sys.argv[1:], "h", ["help"])
++    except getopt.error, msg:
++        print msg
++        print "for help use --help"
++        sys.exit(2)
++    # process options
++    for o, a in opts:
++        if o in ("-h", "--help"):
++            print __doc__
++            sys.exit(0)
++    # process arguments
++    for arg in args:
++        process(arg) # process() is defined elsewhere
++
++if __name__ == "__main__":
++    main()
++
+-- 
+1.7.1
+
