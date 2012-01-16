@@ -167,11 +167,15 @@ footer_html = """
 </html>
 """
 
-def generate_html(output, patches, decorate):
+def generate_html(output, patches, decorate, initial_dir):
     tmpdir = tempfile.mkdtemp()
     assert tmpdir[0:5] == "/tmp/"
-    os.mkdir(tmpdir + "/old")
-    os.mkdir(tmpdir + "/new")
+    if initial_dir is None:
+        os.mkdir(tmpdir + "/old")
+        os.mkdir(tmpdir + "/new")
+    else:
+        shutil.copytree(initial_dir, tmpdir + "/old")
+        shutil.copytree(initial_dir, tmpdir + "/new")
     if decorate:
         output.write(header_html)
     for comment, patch in get_list_of_commits(patches):
@@ -188,6 +192,8 @@ def generate_html(output, patches, decorate):
 
 def main(argv):
     parser = optparse.OptionParser()
+    parser.add_option("-i", "--initial-dir", dest="initial_dir",
+                      help="a directory which contains files upon which the patches will apply")
     parser.add_option("-o", "--output", dest="filename",
                       help="write output to FILE rather than STDOUT", metavar="FILE")
     parser.add_option("-s", "--suppress-decoration", action="store_false", dest="decorate",
@@ -201,7 +207,7 @@ def main(argv):
     else:
         output = open(options.filename, 'w')
 
-    generate_html(output, abspatches, options.decorate)
+    generate_html(output, abspatches, options.decorate, options.initial_dir)
 
     return 0
 

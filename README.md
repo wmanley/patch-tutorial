@@ -15,6 +15,10 @@ the comments in markdown format.
    Usually the output file will be prepended with html, head, style, etc. tags.
    Use this option to suppress this.  This would be typically useful if you wish
    to embed the tutorial in some other page or apply your own custom styling.
+ * `--initial-dir` *directory_name*:
+   Use the contents of the directory *directory name* as a basis upon which to
+   apply the patches.  The files themselves won't be modified, a copy will be
+   taken.
 
 ## NOTES
 

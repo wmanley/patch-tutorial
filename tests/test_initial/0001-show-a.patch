@@ -1,0 +1,23 @@
+From 13512088dd11bf0ae57b7cd43793a36dddb509b3 Mon Sep 17 00:00:00 2001
+From: William Manley <william.manley@youview.com>
+Date: Mon, 16 Jan 2012 14:00:43 +0000
+Subject: [PATCH] @show a
+
+I'm getting to know eveything about you
+---
+ a |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/a b/a
+index 8c6bbec..fbfede4 100644
+--- a/a
++++ b/a
+@@ -1,4 +1,4 @@
+ Hello
+ 
+-I don't know you
++I'm getting to know you
+ 
+-- 
+1.7.6
+
