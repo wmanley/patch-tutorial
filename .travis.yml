@@ -1,0 +1,3 @@
+language: python
+script: ./run-tests.sh
+install: pip install markdown
