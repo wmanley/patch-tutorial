@@ -4,6 +4,7 @@ nosetests *.py
 
 for i in tests/*/run.sh
 do
-	( cd $(dirname $i) && ../../"$i" )
+	echo -n "Running $i... "
+	( cd $(dirname $i) && ../../"$i" ) && echo OK || echo FAILURE
 done
 
