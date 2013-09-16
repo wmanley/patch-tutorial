@@ -28,6 +28,7 @@ def prettify_diff(parent, diff_in):
             hunk_container = etree.SubElement(file_container, "pre")
             hunk_container.set("class", "diff")
             hunk_code = etree.SubElement(hunk_container, "code")
+            hunk_code.text = ''
         else:
             c = { '-': 'diff_old',
                   '+': 'diff_new',
