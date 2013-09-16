@@ -1,15 +1,20 @@
 #!/usr/bin/env python
 
 import markdown
+try:
+    from markdown.util import etree, AtomicString
+except:
+    from markdown import etree, AtomicString
+
 import subprocess
 import re
 
 def prettify_diff(parent, diff_in):
     for line in iter(diff_in):
         if len(line) >= 4 and line[0:4] == "+++ ":
-            file_container = markdown.etree.SubElement(parent, "div")
+            file_container = etree.SubElement(parent, "div")
             file_container.set("class", "file_container")
-            filename_container = markdown.etree.SubElement(file_container, "div")
+            filename_container = etree.SubElement(file_container, "div")
             filename = line.split()[1]
             filename_container.text = "/".join(filename.split("/")[2:])
             filename_container.set('class', 'filename')
@@ -17,19 +22,19 @@ def prettify_diff(parent, diff_in):
             pass
         elif len(line) >= 3 and line[0:3] == '@@ ':
             start_line = re.match('@@ -(\d+)(,\d+)? \+\d+(,\d+)? @@', line).group(1)
-            hunk_header = markdown.etree.SubElement(file_container, "div")
+            hunk_header = etree.SubElement(file_container, "div")
             hunk_header.text = "line %s..." % start_line
             hunk_header.set('class', 'hunk_header')
-            hunk_container = markdown.etree.SubElement(file_container, "pre")
+            hunk_container = etree.SubElement(file_container, "pre")
             hunk_container.set("class", "diff")
-            hunk_code = markdown.etree.SubElement(hunk_container, "code")
+            hunk_code = etree.SubElement(hunk_container, "code")
         else:
             c = { '-': 'diff_old',
                   '+': 'diff_new',
                   ' ': 'diff_unchanged' }.get(line[0])
-            newelement = markdown.etree.SubElement(hunk_code, "div")
+            newelement = etree.SubElement(hunk_code, "div")
             newelement.set("class", c)
-            newelement.text = markdown.AtomicString(line[1:])
+            newelement.text = AtomicString(line[1:])
 
 def open_diff(old, new):
     dp = subprocess.Popen(["diff", "-u", old, new], stdout=subprocess.PIPE)
@@ -63,15 +68,15 @@ class ShowBlockProcessor(markdown.blockprocessors.BlockProcessor):
         assert block.startswith("@show")
         files = block[5:].split()
         for f in files:
-            file_container = markdown.etree.SubElement(parent, "div")
+            file_container = etree.SubElement(parent, "div")
             file_container.set("class", "file_container")
-            filename_container = markdown.etree.SubElement(file_container, "div")
+            filename_container = etree.SubElement(file_container, "div")
             filename_container.text = f
             filename_container.set('class', 'filename')
-            hunk_container = markdown.etree.SubElement(file_container, "pre")
+            hunk_container = etree.SubElement(file_container, "pre")
             hunk_container.set('class', 'show')
-            daddy = markdown.etree.SubElement(hunk_container, "code")
-            daddy.text = markdown.AtomicString("".join(iter(open(self.srcdir + "/new/" + f))))
+            daddy = etree.SubElement(hunk_container, "code")
+            daddy.text = AtomicString("".join(iter(open(self.srcdir + "/new/" + f))))
 
 class ShowPatchExtension(markdown.Extension):
     def extendMarkdown(self, md, md_globals):
